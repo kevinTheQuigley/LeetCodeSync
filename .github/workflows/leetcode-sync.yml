@@ -1,19 +1,21 @@
-name: LeetCode Sync
+name: Sync Leetcode
 
 on:
-  schedule:
-    # Run this workflow daily at midnight
-    - cron: '0 0 * * *'
-
   workflow_dispatch:
+  schedule:
+    - cron: "0 8 * * 6"
 
 jobs:
-  sync:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
-        uses: actions/checkout@v3
-
-      - name: LeetCode Sync
+      - name: Sync
         uses: joshcai/leetcode-sync@v1.7
+        with:
+          github-token: ${{ github.token }}
+          leetcode-csrf-token: ${{ secrets.LEETCODE_CSRF_TOKEN }}
+          leetcode-session: ${{ secrets.LEETCODE_SESSION }}
+          destination-folder: my-folder
+          verbose: true
+          commit-header: "[LeetCode Sync]"
