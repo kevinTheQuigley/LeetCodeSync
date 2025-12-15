@@ -1,28 +1,33 @@
+
 class Solution:
     def canFinish(self, numCourses: int, prerequisites: List[List[int]]) -> bool:
-        def genReqList(prerequisites):
-            reqList=[ [] for _ in range(numCourses)]
-            for (course,prereq)  in prerequisites:
-                reqList[prereq].append(course)
-            return reqList
-            
-        
-        state = [0]*numCourses
-        reqList = genReqList(prerequisites)
+        def genPreqList(numCourses,prerequisites):
+            preqList = [[] for _ in range(numCourses)]
 
-        def hasCycle(course)->bool:
-            if state[course]==1:
-                return False
-            if state[course]==-1:
+            for (course,prereq) in prerequisites:
+                preqList[prereq].append(course)
+
+            return preqList
+
+        preqList = genPreqList(numCourses,prerequisites)
+
+        courseStatus = numCourses*[0]
+
+        def hasCycle(course):
+            if courseStatus[course]==-1:
                 return True
+            elif courseStatus[course]==1:
+                return False
             
-            state[course]=-1
-            for pres in reqList[course]:
-                if hasCycle(pres):
+            courseStatus[course]=-1
+
+            for nextCourse in preqList[course]:
+                if hasCycle(nextCourse):
                     return True
-            state[course]=1
+                
+            courseStatus[course]=1
             return False
-        
+
         for course in range(numCourses):
             if hasCycle(course):
                 return False
