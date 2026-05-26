@@ -1,30 +1,21 @@
-class Solution(object):
-    def lengthOfLongestSubstring(self, inputString):
 
-        repeatDict = {}
-        repeatString = ""
-        repeatLength = 0
-        maxRepeat = 0
-        if len(inputString)==0:
-            return repeatLength
+class Solution:
+    def lengthOfLongestSubstring(self, s: str) -> int:
+        char_set=set()
 
-        for i in range(len(inputString)):
-            j = i
-            length = 0 
-            while j < len(inputString):
-                if inputString[j] in repeatDict:
-                    break
-                length +=1
-                
-                maxRepeat = max(length,maxRepeat)
-                repeatDict[inputString[j]] =True
-                j+=1
-            repeatDict = {}
+        left =0
+        right=0
+        maxCharLen=0
+
+        while right <len(s):
+            while s[right] in char_set:
+                char_set.remove(s[left])
+                left+=1
+            char_set.add(s[right])
+            right+=1
+            charLen=right-left
+            if charLen>maxCharLen:
+                maxCharLen=charLen
+                print(left,right)
         
-        return maxRepeat
-
-        """
-        :type s: str
-        :rtype: int
-        """
-        
+        return maxCharLen
