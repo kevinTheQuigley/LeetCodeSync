@@ -1,21 +1,26 @@
-class Solution(object):
-    def isValid(self, s):
-        stack = []
-
+class Solution:
+    def isValid(self, s: str) -> bool:
+        parenStack = list()
+        parenDict={
+            "{":"}",
+            "[":"]",
+            "(":")"
+        }
 
         while len(s)>0:
-            char = s[0]
-            s = s[1:]
-            if char in "([{":
-                stack.append(char)
+            p=s[0]
+            s=s[1:]
+            if p in "{[(":
+                parenStack.append(parenDict[p])
             else:
-                if len(stack)==0:
+                if len(parenStack)==0:
                     return False
-                openChar = stack.pop()
-                if (char == ")" and openChar != "(") or (char == "]" and openChar != "[") or (char == "}" and openChar != "{") :
+                char = parenStack.pop()
+                if char !=p:
                     return False
-        
-        if len(stack)>0:
+        if len(parenStack)==0:
+            return True
+        else:
             return False
         
-        return True
+        
